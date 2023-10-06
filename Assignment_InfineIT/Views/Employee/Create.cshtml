@@ -5,6 +5,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+    <div class="collapse navbar-collapse" id="navbarNav">
+       
+                <a class="nav-link text-white" href="/Home/Index">Employee List</a>
+          
+    </div>
     <div class="container">
         <h2>Create Employee</h2>
         <form method="post" action="~/Employee/Create">
@@ -79,7 +84,7 @@
                             <option value="@country.Value">@country.Text</option>
                         }
                     }
-                    </select>
+                </select>
             </div>
 
             <!-- State Code Dropdown -->
@@ -94,7 +99,7 @@
                             <option value="@state.Value">@state.Text</option>
                         }
                     }
-                    </select>
+                </select>
             </div>
 
             <!-- City Code Dropdown -->
@@ -109,7 +114,7 @@
                             <option value="@city.Value">@city.Text</option>
                         }
                     }
-                    </select>
+                </select>
             </div>
 
 
@@ -162,7 +167,7 @@
             }
             if (lastName.length > 0) {
                 code += lastName[0].toUpperCase();
-                
+
             }
 
             // Set the generated code in the "Code" input field

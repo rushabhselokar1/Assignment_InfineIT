@@ -42,7 +42,7 @@ public class EmployeeController : Controller
             // Now, you can add the employee to the database with the unique code
             db.CreateEmployee(employee);
 
-            return RedirectToAction("Create");
+            return RedirectToAction("Index", "Home");
         }
 
         public ActionResult Edit(string code)
