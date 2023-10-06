@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Employee</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Create Employee</h2>
+        <form method="post" action="~/Employee/Create">
+
+
+            <div class="form-group">
+                <label for="Code">Code:</label>
+                <input type="text" id="Code" name="Code" class="form-control" required maxlength="6" oninput="generateCode()">
+            </div>
+
+
+            <div class="form-group">
+                <label for="First_Name">First Name:</label>
+                <input type="text" id="First_Name" name="First_Name" class="form-control" required maxlength="50">
+            </div>
+
+            <div class="form-group">
+                <label for="Middle_Name">Middle Name:</label>
+                <input type="text" id="Middle_Name" name="Middle_Name" class="form-control" maxlength="50">
+            </div>
+
+            <div class="form-group">
+                <label for="Last_Name">Last Name:</label>
+                <input type="text" id="Last_Name" name="Last_Name" class="form-control" maxlength="50">
+            </div>
+
+            <div class="form-group">
+                <label for="Full_Name">Full Name:</label>
+                <input type="text" id="Full_Name" name="Full_Name" class="form-control" maxlength="200" oninput="mergeNames()">
+            </div>
+
+
+            <div class="form-group">
+                <label for="DOB">Date of Birth:</label>
+                <input type="date" id="DOB" name="DOB" class="form-control" required>
+                <span class="field-validation-valid text-danger" data-valmsg-for="DOB" data-valmsg-replace="true"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label for="Salary">Salary:</label>
+                <input type="number" id="Salary" name="Salary" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="Dept_Code">Department Code:</label>
+                <select id="Dept_Code" name="Dept_Code" class="form-control">
+                    <option value="" disabled selected>Select a Department</option> <!-- Placeholder -->
+                    @if (ViewBag.Departments != null)
+                    {
+                        foreach (var department in ViewBag.Departments)
+                        {
+                            <option value="@department.Value">@department.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+
+
+
+
+
+            <!-- Country Code Dropdown -->
+            <div class="form-group">
+                <label for="Country_Code">Country Code:</label>
+                <select id="Country_Code" name="Country_Code" class="form-control">
+                    <option value="" disabled selected>Select a Country</option> <!-- Placeholder -->
+                    @if (ViewBag.Country != null)
+                    {
+                        foreach (var country in ViewBag.Country)
+                        {
+                            <option value="@country.Value">@country.Text</option>
+                        }
+                    }
+                    </select>
+            </div>
+
+            <!-- State Code Dropdown -->
+            <div class="form-group">
+                <label for="State_Code">State Code:</label>
+                <select id="State_Code" name="State_Code" class="form-control">
+                    <option value="" disabled selected>Select a State</option> <!-- Placeholder -->
+                    @if (ViewBag.State != null)
+                    {
+                        foreach (var state in ViewBag.State)
+                        {
+                            <option value="@state.Value">@state.Text</option>
+                        }
+                    }
+                    </select>
+            </div>
+
+            <!-- City Code Dropdown -->
+            <div class="form-group">
+                <label for="City_Code">City Code:</label>
+                <select id="City_Code" name="City_Code" class="form-control">
+                    <option value="" disabled selected>Select a City</option> <!-- Placeholder -->
+                    @if (ViewBag.City != null)
+                    {
+                        foreach (var city in ViewBag.City)
+                        {
+                            <option value="@city.Value">@city.Text</option>
+                        }
+                    }
+                    </select>
+            </div>
+
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+
+    <!-- Include Bootstrap JavaScript and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <!-- Include jQuery Validation plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+
+    <script>
+        // Calculate the minimum date allowed (18 years ago from today)
+        var today = new Date();
+        var minDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+
+        // Add a change event listener to the Date of Birth input
+        document.getElementById("DOB").addEventListener("change", function () {
+            var selectedDate = new Date(this.value);
+            if (selectedDate > minDate) {
+                this.setCustomValidity("You must be at least 18 years old.");
+            } else {
+                this.setCustomValidity("");
+            }
+        });
+    </script>
+    <script>
+        function generateCode() {
+            // Get the values of First_Name, Middle_Name, and Last_Name inputs
+            var firstName = document.getElementById("First_Name").value;
+            var middleName = document.getElementById("Middle_Name").value;
+            var lastName = document.getElementById("Last_Name").value;
+
+            // Initialize the code variable
+            var code = "";
+
+            // Extract the first letter of each name (if available) and concatenate them
+            if (firstName.length > 0) {
+                code += firstName[0].toUpperCase();
+            }
+            if (middleName.length > 0) {
+                code += middleName[0].toUpperCase();
+            }
+            if (lastName.length > 0) {
+                code += lastName[0].toUpperCase();
+                
+            }
+
+            // Set the generated code in the "Code" input field
+            document.getElementById("Code").value = code;
+        }
+    </script>
+    <script>
+        function mergeNames() {
+            // Get the values of First_Name, Middle_Name, and Last_Name inputs
+            var firstName = document.getElementById("First_Name").value;
+            var middleName = document.getElementById("Middle_Name").value;
+            var lastName = document.getElementById("Last_Name").value;
+
+            // Initialize the full name variable
+            var fullName = "";
+
+            // Concatenate the names with spaces (if available)
+            if (firstName.length > 0) {
+                fullName += firstName;
+            }
+            if (middleName.length > 0) {
+                fullName += (fullName.length > 0 ? ' ' : '') + middleName;
+            }
+            if (lastName.length > 0) {
+                fullName += (fullName.length > 0 ? ' ' : '') + lastName;
+            }
+
+            // Set the merged full name in the "Full_Name" input field
+            document.getElementById("Full_Name").value = fullName;
+        }
+    </script>
+
+</body>
+</html>

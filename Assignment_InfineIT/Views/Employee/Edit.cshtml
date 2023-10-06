@@ -1,0 +1,132 @@
+﻿@model Assignment_InfineIT.Models.Employee 
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit Employee</title>
+    <!-- Add your CSS styles here -->
+   
+</head>
+<body>
+    <div class="container">
+        <h2>Edit Employee</h2>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Code)
+                @Html.DisplayFor(model => model.Code)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.First_Name)
+                @Html.TextBoxFor(model => model.First_Name, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Middle_Name)
+                @Html.TextBoxFor(model => model.Middle_Name, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Last_Name)
+                @Html.TextBoxFor(model => model.Last_Name, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Full_Name)
+                @Html.TextBoxFor(model => model.Full_Name, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DOB)
+                @Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+
+            <div class="form-group">
+                <label for="age">Age (Years, Months, Days)</label>
+                <p id="age">Age: @ViewBag.AgeYears years, @ViewBag.AgeMonths months, @ViewBag.AgeDays days</p>
+            </div>
+
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Salary)
+                @Html.TextBoxFor(model => model.Salary, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <label for="Dept_Code">Department Code:</label>
+                <select id="Dept_Code" name="Dept_Code" class="form-control">
+                    <option value="" disabled selected>@ViewBag.DepartmentName</option> <!-- Placeholder -->
+                    @if (ViewBag.Departments != null)
+                    {
+                        foreach (var department in ViewBag.Departments)
+                        {
+                            <option value="@department.Value">@department.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+
+
+
+
+
+            <!-- Country Code Dropdown -->
+            <div class="form-group">
+                <label for="Country_Code">Country Code:</label>
+                <select id="Country_Code" name="Country_Code" class="form-control">
+                    <option value="" disabled selected>@ViewBag.CountryName</option> <!-- Placeholder -->
+                    @if (ViewBag.Country != null)
+                    {
+                        foreach (var country in ViewBag.Country)
+                        {
+                            <option value="@country.Value">@country.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <!-- State Code Dropdown -->
+            <div class="form-group">
+                <label for="State_Code">State Code:</label>
+                <select id="State_Code" name="State_Code" class="form-control">
+                    <option value="" disabled selected>@ViewBag.StateName</option> <!-- Placeholder -->
+                    @if (ViewBag.State != null)
+                    {
+                        foreach (var state in ViewBag.State)
+                        {
+                            <option value="@state.Value">@state.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <!-- City Code Dropdown -->
+            <div class="form-group">
+                <label for="City_Code">City Code:</label>
+                <select id="City_Code" name="City_Code" class="form-control">
+                    <option value="" disabled selected>@ViewBag.CityName </option> <!-- Placeholder -->
+                    @if (ViewBag.City != null)
+                    {
+                        foreach (var city in ViewBag.City)
+                        {
+                            <option value="@city.Value">@city.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        }
+    </div>
+   
+</body>
+
+
+</html>

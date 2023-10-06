@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "Statistics";
+}
+
+<h2>Statistics</h2>
+
+<div class="form-group">
+    <label for="Result">Result:</label>
+    <select id="Result" name="Result" class="form-control">
+        <option value="" disabled selected>Select an Option</option>
+        <option value="CityWise">City Wise</option>
+        <option value="DepartmentWise">Department Wise</option>
+    </select>
+</div>
+
+<div id="statisticsTable" class="table">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Total Salary</th>
+                <th>Employee Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be loaded dynamically here -->
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#Result").change(function () {
+            var selectedOption = $(this).val();
+            if (selectedOption === "CityWise" || selectedOption === "DepartmentWise") {
+                $.ajax({
+                    url: selectedOption === "CityWise" ? '@Url.Action("GetCityStatistics")' : '@Url.Action("GetDepartmentStatistics")',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        $("#statisticsTable tbody").empty(); // Clear existing table rows
+                        $.each(data, function (i, item) {
+                            $("#statisticsTable tbody").append(
+                                '<tr><td>' + item.Name + '</td><td>' + item.TotalSalary + '</td><td>' + item.EmployeeCount + '</td></tr>'
+                            );
+                        });
+                    },
+                    error: function (error) {
+                        console.error(error);
+                    }
+                });
+            } else {
+                $("#statisticsTable tbody").empty(); // Clear existing table rows
+            }
+        });
+    });
+</script>
