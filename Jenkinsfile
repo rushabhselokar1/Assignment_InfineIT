@@ -8,7 +8,7 @@ pipeline {
 				}
 				stage('Build') {
     					steps {
-    					    bat "\"${tool 'MSBuild'}\" Assignment_InfineIT.sln /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:SkipInvalidConfigurations=true /t:build /p:Configuration=Release /p:Platform=\"Any CPU\" /p:publishUrl=C:\test12"
+    					    bat "\"${tool 'MSBuild'}\" Assignment_InfineIT.sln /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:SkipInvalidConfigurations=true /t:build /p:Configuration=Release /p:Platform=\"Any CPU\" /p:publishUrl=C:\\test12"
     					}
 				}
 			}
