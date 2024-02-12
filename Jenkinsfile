@@ -32,12 +32,4 @@ pipeline {
             }
         }
     }
-
-    post {
-        always {
-            // Cleanup or additional steps to execute regardless of success or failure
-            echo "Running cleanup steps..."
-            // Add your cleanup steps here
-        }
-    }
 }
