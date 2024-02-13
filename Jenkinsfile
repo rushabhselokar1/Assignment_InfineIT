@@ -37,15 +37,14 @@ pipeline {
             }
         }
 
-        stage('Run Bash Script') {
+        stage('Run Windows Batch Commands') {
             steps {
-                // Example of running a Bash script using the 'sh' step
-                sh '''
-                    echo "Running Windows Bash script..."
-                    # Add your Windows Bash commands here
-
-                    # Note: This example uses 'rsync' instead of 'robocopy' since 'robocopy' is Windows-specific
-                    rsync -a C:/ProgramData/Jenkins/.jenkins/workspace/pipe/Assignment_InfineIT/obj/Release/Package/* C:/Tools
+                // Example of running Windows Batch commands using the 'bat' step
+                bat '''
+                    echo "Running Windows Batch commands..."
+                    
+                    rem Use 'robocopy' to copy files from source to destination
+                    robocopy C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\dev\\Assignment_InfineIT\\obj\\Release\\  C:\\Tools
                 '''
             }
         }
