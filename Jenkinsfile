@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     triggers {
-        cron('H 10-18/1 * * 1-6')  // Trigger the build every hour from 10 AM to 6 PM on weekdays
+        cron('0 10-18/1 * * 1-6')  // Trigger the build every hour from 10 AM to 6 PM on weekdays
     }
 
     stages {
