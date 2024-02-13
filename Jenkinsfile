@@ -36,7 +36,7 @@ pipeline {
         stage('Archive Artifacts') {
             steps {
                 // Define the destination path
-                def destinationPath = 'C:/Tools/Artifacts'
+                def destinationPath = 'C://Tools//Artifacts'
 
                 // Archive the artifacts to the specified path
                 archiveArtifacts artifacts: 'c:\\inetpub\\wwwroot\\**/*', fingerprint: true
