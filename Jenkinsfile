@@ -38,16 +38,23 @@ pipeline {
         }
 
         stage('Run Windows Batch Commands') {
-            steps {
+    steps {
+        script {
+            try {
                 // Example of running Windows Batch commands using the 'bat' step
                 bat '''
                     echo "Running Windows Batch commands..."
                     
-                    rem Use 'robocopy' to copy files from source to destination
-                    robocopy "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\dev\\Assignment_InfineIT\\obj\\Release\\Package"  "C:\\Tools" /E
+                    rem Use 'robocopy' to copy folders and files from source to destination
+                    robocopy "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\dev\\Assignment_InfineIT\\obj\\Release\\Package" "C:\\Tools" /E
                 '''
+            } catch (Exception e) {
+                currentBuild.result = 'FAILURE'
+                error "Failed to run Windows Batch Commands: ${e.message}"
             }
         }
+    }
+}
 
         stage('Archive Artifacts') {
             steps {
