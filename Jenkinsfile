@@ -34,15 +34,17 @@ pipeline {
         }
 
         stage('Archive Artifacts') {
-            steps {
+    steps {
+        // Define the destination path
+        def destinationPath = 'C:/Tools/Artifacts'
 
-                // Archive the artifacts to the specified path
-                archiveArtifacts artifacts: 'c:\\inetpub\\wwwroot\\**/*', fingerprint: true
+        // Archive the artifacts to the specified path
+        archiveArtifacts artifacts: '**/*', fingerprint: true
 
-                // Move the artifacts to the desired path
-                bat "mkdir ${destinationPath}"
-                bat "move \"%WORKSPACE%\\archive\\**\" ${destinationPath}"
-            }
-        }
+        // Move the artifacts to the desired path
+        bat "mkdir ${destinationPath}"
+        bat "move \"%WORKSPACE%\\archive\\**\" ${destinationPath}"
+    }
+}
     }
 }
