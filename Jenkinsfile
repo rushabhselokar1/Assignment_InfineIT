@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+	triggers {
+        cron('H 10-18/1 * * 1-6')  // Trigger the build every 15 minutes
+    }
+
     stages {
         stage('Source') {
             steps {
