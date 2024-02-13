@@ -44,7 +44,7 @@ pipeline {
                     echo "Running Windows Batch commands..."
                     
                     rem Use 'robocopy' to copy files from source to destination
-                    robocopy C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\dev\\Assignment_InfineIT\\obj\\Release\\  C:\\Tools
+                    robocopy "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\dev\\Assignment_InfineIT\\obj\\Release\\Package\\package Tmp"  "C:\\Tools" /E
                 '''
             }
         }
