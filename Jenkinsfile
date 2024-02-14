@@ -6,15 +6,6 @@ pipeline {
     }
 
     stages {
-        stage('Pre-Build') {
-            steps {
-                script {
-                    // Create app_offline.htm for maintenance
-                    writeFile file: 'app_offline.htm', text: '<html><body><h1>Under Maintenance</h1><p>We\'ll be back soon!</p></body></html>'
-                }
-            }
-        }
-
         stage('Source') {
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'c5451ba3-6250-4639-bfab-2ffc99306a4b', url: 'https://github.com/rushabhselokar1/Assignment_InfineIT.git']]])
@@ -24,6 +15,9 @@ pipeline {
         stage('Build') {
             steps {
                 script {
+                    // Create app_offline.htm for maintenance
+                    writeFile file: 'C:\\inetpub\\wwwroot\\app_offline.htm', text: '<html><body><h1>Under Maintenance</h1><p>We\'ll be back soon!</p></body></html>'
+
                     // Define MSBuild command
                     def msbuildCmd = "\"${tool 'MSBuild'}\" Assignment_InfineIT.sln " +
                                     "/p:DeployOnBuild=true " +
