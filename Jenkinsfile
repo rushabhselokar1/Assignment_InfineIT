@@ -15,9 +15,6 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Create app_offline.htm for maintenance
-                    writeFile file: 'C:\\inetpub\\wwwroot\\app_offline.htm', text: '<html><body><h1>Under Maintenance</h1><p>We\'ll be back soon!</p></body></html>'
-
                     // Define MSBuild command
                     def msbuildCmd = "\"${tool 'MSBuild'}\" Assignment_InfineIT.sln " +
                                     "/p:DeployOnBuild=true " +
