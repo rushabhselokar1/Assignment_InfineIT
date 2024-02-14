@@ -46,12 +46,9 @@ pipeline {
                             echo "Running Windows Batch commands..."
                             
                             rem Use 'robocopy' to copy folders and files from source to destination
-                            robocopy "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\pipe\\Assignment_InfineIT\\obj\\Release\\Package\\Package" "C:\\backup_publish_project" /E
+                            robocopy "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\pipe\\Assignment_InfineIT\\obj\\Release\\Package" "C:\\backup_publish_project" /E
                         '''
-                    } catch (Exception e) {
-                        currentBuild.result = 'FAILURE'
-                        error "Failed to run Windows Batch Commands: ${e.message}"
-                    }
+                    
                 }
             }
         }
