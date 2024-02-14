@@ -27,7 +27,6 @@ pipeline {
                                     "/t:build " +
                                     "/p:Configuration=Release " +
                                     "/p:Platform=\"Any CPU\" " +
-                                    "/p:DeleteExistingFiles=True " +
                                     "/p:publishUrl=c:\\inetpub\\wwwroot"
                     
                     // Execute MSBuild and additional commands in a single bat step
