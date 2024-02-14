@@ -37,25 +37,25 @@ pipeline {
             }
         }
 
-        stage('Run Windows Batch Commands') {
-    steps {
-        script {
-            try {
-                echo "Running Windows Batch commands..."
+//         stage('Run Windows Batch Commands') {
+//     steps {
+//         script {
+//             try {
+//                 echo "Running Windows Batch commands..."
 
-                // Quote the paths to handle spaces and potential special characters
-                def sourcePath = '"C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\pipe\\Assignment_InfineIT\\obj\\Release\\Package"'
-                def destinationPath = '"C:\\backup_publish_project"'
+//                 // Quote the paths to handle spaces and potential special characters
+//                 def sourcePath = '"C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\pipe\\Assignment_InfineIT\\obj\\Release\\Package"'
+//                 def destinationPath = '"C:\\backup_publish_project"'
 
-                // Use 'robocopy' to copy folders and files from source to destination
-                bat "robocopy $sourcePath $destinationPath /E"
-            } catch (Exception e) {
-                currentBuild.result = 'FAILURE'
-                error "Failed to run Windows Batch Commands: ${e.message}"
-            }
-        }
-    }
-}
+//                 // Use 'robocopy' to copy folders and files from source to destination
+//                 bat "robocopy $sourcePath $destinationPath /E"
+//             } catch (Exception e) {
+//                 currentBuild.result = 'FAILURE'
+//                 error "Failed to run Windows Batch Commands: ${e.message}"
+//             }
+//         }
+//     }
+// }
 
 
         stage('Archive Artifacts') {
