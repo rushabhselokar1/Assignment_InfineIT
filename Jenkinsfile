@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     triggers {
-        cron('0 10-18/1 * * 1-6')  // Trigger the build every hour from 10 AM to 6 PM on weekdays
+        cron('0 10-18/1 * * 1-6')  // Trigger the build every hour from 10 AM to 6 PM on Monday to Saturday
     }
 
     stages {
@@ -38,23 +38,26 @@ pipeline {
         }
 
         stage('Run Windows Batch Commands') {
-    steps {
-        script {
-            try {
-                // Example of running Windows Batch commands using the 'bat' step
-                bat '''
-                    echo "Running Windows Batch commands..."
-                    
-                    rem Use 'robocopy' to copy folders and files from source to destination
-                    robocopy "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\dev\\Assignment_InfineIT\\obj\\Release\\Package" "C:\\Tools" /E
-                '''
-            } catch (Exception e) {
-                currentBuild.result = 'FAILURE'
-                error "Failed to run Windows Batch Commands: ${e.message}"
+            steps {
+                script {
+                    try {
+                        // Example of running Windows Batch commands using the 'bat' step
+                        bat '''
+                            echo "Running Windows Batch commands..."
+                            
+                            rem Use 'robocopy' to copy folders and files from source to destination
+                            robocopy "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\pipe\\Assignment_InfineIT\\obj\\Release\\Package" "C:\\Tools" /E
+
+                            rem Create app_offline.htm for maintenance
+                            echo "<html><body><h1>Under Maintenance</h1><p>We'll be back soon!</p></body></html>" > "C:\\Tools\\app_offline.htm"
+                        '''
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        error "Failed to run Windows Batch Commands: ${e.message}"
+                    }
+                }
             }
         }
-    }
-}
 
         stage('Archive Artifacts') {
             steps {
