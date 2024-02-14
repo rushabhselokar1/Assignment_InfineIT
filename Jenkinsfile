@@ -69,7 +69,7 @@ pipeline {
             steps {
                 script {
                     // Create app_offline.htm for maintenance
-                    writeFile file: 'C:\\inetpub\\wwwroot\\App_offline.htm', text: '''
+                    writeFile file: 'C:\\inetpub\\wwwroot\\DISABLE-App_offline.htm', text: '''
                     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
                     <html>
                     <head>
