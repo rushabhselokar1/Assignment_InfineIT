@@ -6,6 +6,15 @@ pipeline {
     }
 
     stages {
+        stage('Pre-Build') {
+            steps {
+                script {
+                    // Create app_offline.htm for maintenance
+                    writeFile file: 'app_offline.htm', text: '<html><body><h1>Under Maintenance</h1><p>We\'ll be back soon!</p></body></html>'
+                }
+            }
+        }
+
         stage('Source') {
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'c5451ba3-6250-4639-bfab-2ffc99306a4b', url: 'https://github.com/rushabhselokar1/Assignment_InfineIT.git']]])
@@ -26,7 +35,7 @@ pipeline {
                                     "/p:Platform=\"Any CPU\" " +
                                     "/p:DeleteExistingFiles=True " +
                                     "/p:publishUrl=c:\\inetpub\\wwwroot"
-
+                    
                     // Execute MSBuild and additional commands in a single bat step
                     bat """
                         ${msbuildCmd}
@@ -46,10 +55,7 @@ pipeline {
                             echo "Running Windows Batch commands..."
                             
                             rem Use 'robocopy' to copy folders and files from source to destination
-                            robocopy "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\pipe\\Assignment_InfineIT\\obj\\Release\\Package" "C:\\Tools" /E
-
-                            rem Create app_offline.htm for maintenance
-                            echo "<html><body><h1>Under Maintenance</h1><p>We'll be back soon!</p></body></html>" > "C:\\Tools\\app_offline.htm"
+                            robocopy "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\dev\\Assignment_InfineIT\\obj\\Release\\Package" "C:\\Tools" /E
                         '''
                     } catch (Exception e) {
                         currentBuild.result = 'FAILURE'
