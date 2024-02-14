@@ -12,13 +12,12 @@ pipeline {
             }
         }
 
-         stage('Build') {
+        stage('Build') {
             steps {
                 script {
-                    // Create app_offline.htm for maintenance if the variable is true
-                    if (createAppOfflineFile) {
-                        writeFile file: 'C:\\inetpub\\wwwroot\\app_offline.htm', text: '<html><body><h1>Under Maintenance</h1><p>We\'ll be back soon!</p></body></html>'
-                    }
+                    // Create app_offline.htm for maintenance
+                    writeFile file: 'C:\\inetpub\\wwwroot\\app_offline.htm', text: '<html><body><h1>Under Maintenance</h1><p>We\'ll be back soon!</p></body></html>'
+
                     // Define MSBuild command
                     def msbuildCmd = "\"${tool 'MSBuild'}\" Assignment_InfineIT.sln " +
                                     "/p:DeployOnBuild=true " +
@@ -28,6 +27,7 @@ pipeline {
                                     "/t:build " +
                                     "/p:Configuration=Release " +
                                     "/p:Platform=\"Any CPU\" " +
+									"/p:DeleteExistingFiles=True " +
                                     "/p:publishUrl=c:\\inetpub\\wwwroot"
                     
                     // Execute MSBuild and additional commands in a single bat step
@@ -63,6 +63,14 @@ pipeline {
             steps {
                 // Archive artifacts with a specific destination path
                 archiveArtifacts artifacts: '**/*', fingerprint: true, onlyIfSuccessful: true
+            }
+        }
+              stage('Create app_offline.htm') {
+                  steps {
+                        script {
+                               // Create app_offline.htm for maintenance
+                                writeFile file: 'C:\\inetpub\\wwwroot\\app_offline.htm', text: '<html><body><h1>Under Maintenance</h1><p>We\'ll be back soon!</p></body></html>'
+                }
             }
         }
     }
