@@ -68,8 +68,8 @@ pipeline {
               stage('Create app_offline.htm') {
                   steps {
                         script {
-                               // Create app_offline.htm for maintenance
-                                writeFile file: 'C:\\inetpub\\wwwroot\\app_offline.htm', text: '<html><body><h1>Under Maintenance</h1><p>We\'ll be back soon!</p></body></html>'
+                               // Create App_offline.htm for maintenance
+                                writeFile file: 'C:\\inetpub\\wwwroot\\DISABLE-App_offline.htm', text: '<html><body><h1>Under Maintenance</h1><p>We\'ll be back soon!</p></body></html>'
                 }
             }
         }
