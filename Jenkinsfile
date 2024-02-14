@@ -44,7 +44,7 @@ pipeline {
                 echo "Running Windows Batch commands..."
 
                 // Quote the paths to handle spaces and potential special characters
-                def sourcePath = '"C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\pipe\\Assignment_InfineIT\\obj\\Release\\Package\\PackageTmp"'
+                def sourcePath = '"C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\pipe\\Assignment_InfineIT\\obj\\Release\\Package"'
                 def destinationPath = '"C:\\backup_publish_project"'
 
                 // Use 'robocopy' to copy folders and files from source to destination
