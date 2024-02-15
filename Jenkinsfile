@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     triggers {
-        cron('*/2 * * * *')  // Trigger the build every 2 min
+        cron('H/2 * * * *')  // Trigger the build every 2 min
     }
 
     stages {
