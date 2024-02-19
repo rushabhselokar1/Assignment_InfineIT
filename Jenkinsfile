@@ -46,7 +46,7 @@ pipeline {
 stage('MySQL Dump and Import') {
     steps {
         script {
-            def mysqlDumpCmd = "C:\Program Files\MySQL\MySQL Workbench 8.0 CE\mysqldump.exe"
+            // def mysqlDumpCmd = "C:\\Path\\To\\MySQL\\bin\\mysqldump"
             
             // MySQL dump command
             bat "${mysqlDumpCmd} -u admin -p admin123 -h database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com employee > source_dump.sql"
