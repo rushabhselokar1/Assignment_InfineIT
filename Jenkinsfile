@@ -28,7 +28,7 @@ pipeline {
                             "/p:Configuration=Release " +
                             "/p:Platform=\"Any CPU\" " +
                             "/p:DeleteExistingFiles=True " +
-                            "/p:publishUrl=c:\\inetpub\\wwwroot"
+                            "/p:publishUrl=c:\\test12"
             
             // Execute NuGet Package Restore, MSBuild, and additional commands in a single bat step
             bat """
