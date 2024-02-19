@@ -43,19 +43,6 @@ pipeline {
 
 
 
-stage('MySQL Dump and Import') {
-            steps {
-                script {
-                    // MySQL dump command
-                    bat "mysqldump -u admin -p admin123 -h database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com employee > source_dump.sql"
-
-                    // MySQL import command
-                    bat "mysql -u admin -p admin123 -h database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com test_database < source_dump.sql"
-                }
-            }
-        }
-
-
 
 //         stage('Run Windows Batch Commands') {
 //     steps {
@@ -156,3 +143,25 @@ stage('MySQL Dump and Import') {
         }
     }
 }
+
+
+stage('Database Synchronization') {
+            steps {
+                script {
+                    try {
+                        // MySQL dump from source database
+                        bat '''
+                            mysqldump -u source_username -psource_password -h source_host source_database > source_dump.sql
+                        '''
+                        
+                        // MySQL import to destination database
+                        bat '''
+                            mysql -u destination_username -pdestination_password -h destination_host destination_database < source_dump.sql
+                        '''
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        error "Failed to synchronize databases: ${e.message}"
+                    }
+                }
+            }
+        }
