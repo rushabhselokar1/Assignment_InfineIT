@@ -67,7 +67,7 @@ pipeline {
                         def sourceDatabase = "employee"
 
                         // MySQL dump from source database
-                        bat "${mysqlDumpCmd} -u ${sourceUsername} -p${sourcePassword} -h ${sourceHost} ${sourceDatabase} > source_dump.sql"
+                        bat "${mysqlDumpCmd} -u ${sourceUsername} -p ${sourcePassword} -h ${sourceHost} ${sourceDatabase} > source_dump.sql"
 
                         // MySQL import to destination database
                         bat "mysql -u admin -p admin123 -h database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com test_database < source_dump.sql"
