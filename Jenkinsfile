@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    // triggers {
-    //     cron('*/2 * * * *')  // Trigger the build every 2 min
-    // }
-
     stages {
         stage('Source') {
             steps {
@@ -13,57 +9,32 @@ pipeline {
         }
 
         stage('Build') {
-    steps {
-        script {
-            // NuGet Package Restore
-            bat "\"C:\\Program Files (x86)\\NuGet\\nuget.exe\" restore Assignment_InfineIT.sln"
-            
-            // Define MSBuild command with the full path
-            def msbuildCmd = "\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe\" Assignment_InfineIT.sln " +
-                            "/p:DeployOnBuild=true " +
-                            "/p:DeployDefaultTarget=WebPublish " +
-                            "/p:WebPublishMethod=FileSystem " +
-                            "/p:SkipInvalidConfigurations=true " +
-                            "/t:build " +
-                            "/p:Configuration=Release " +
-                            "/p:Platform=\"Any CPU\" " +
-                            "/p:DeleteExistingFiles=True " +
-                            "/p:publishUrl=c:\\test12"
-            
-            // Execute NuGet Package Restore, MSBuild, and additional commands in a single bat step
-            bat """
-                ${msbuildCmd}
-                echo Additional commands...
-                rem Add your additional commands here
-            """
+            steps {
+                script {
+                    // NuGet Package Restore
+                    bat "\"C:\\Program Files (x86)\\NuGet\\nuget.exe\" restore Assignment_InfineIT.sln"
+                    
+                    // MSBuild command
+                    def msbuildCmd = "\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe\" Assignment_InfineIT.sln " +
+                                    "/p:DeployOnBuild=true " +
+                                    "/p:DeployDefaultTarget=WebPublish " +
+                                    "/p:WebPublishMethod=FileSystem " +
+                                    "/p:SkipInvalidConfigurations=true " +
+                                    "/t:build " +
+                                    "/p:Configuration=Release " +
+                                    "/p:Platform=\"Any CPU\" " +
+                                    "/p:DeleteExistingFiles=True " +
+                                    "/p:publishUrl=C:\\inetpub\\wwwroot"
+
+                    // Execute NuGet Package Restore, MSBuild, and additional commands in a single bat step
+                    bat """
+                        ${msbuildCmd}
+                        echo Additional commands...
+                        rem Add your additional commands here
+                    """
+                }
+            }
         }
-    }
-}
-
-
-
-
-
-//         stage('Run Windows Batch Commands') {
-//     steps {
-//         script {
-//             try {
-//                 echo "Running Windows Batch commands..."
-
-//                 // Quote the paths to handle spaces and potential special characters
-//                 def sourcePath = '"C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\pipe\\Assignment_InfineIT\\obj\\Release\\Package"'
-//                 def destinationPath = '"C:\\backup_publish_project"'
-
-//                 // Use 'robocopy' to copy folders and files from source to destination
-//                 bat "robocopy $sourcePath $destinationPath /E"
-//             } catch (Exception e) {
-//                 currentBuild.result = 'FAILURE'
-//                 error "Failed to run Windows Batch Commands: ${e.message}"
-//             }
-//         }
-//     }
-// }
-
 
         stage('Archive Artifacts') {
             steps {
@@ -78,86 +49,21 @@ pipeline {
                     // Create app_offline.htm for maintenance
                     writeFile file: 'C:\\inetpub\\wwwroot\\DISABLE-App_offline.htm', text: '''
                     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-                    <html>
-                    <head>
-                        <style type="text/css">
-                            @font-face {
-                                font-family: "Open Sans";
-                                font-style: normal;
-                                font-weight: 400;
-                                src: local("Segoe UI"), local("Open Sans"), local("OpenSans"), url(https://themes.googleusercontent.com/static/fonts/opensans/v6/K88pR3goAWT7BTt32Z01mz8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
-                            }
-                            body {
-                                font-family: "Open Sans";
-                            }
-                            h1 {
-                                font-size: 90px !important;
-                            }
-                            .error-page-container {
-                                color: #333333;
-                                margin: 50px auto 0;
-                                text-align: center;
-                                width: 600px;
-                            }
-                            .error-page-container h1 {
-                                font-size: 120px;
-                                font-weight: normal;
-                                line-height: 120px;
-                                margin: 10px 0;
-                                font-family: "Open Sans";
-                            }
-                            .error-page-container h2 {
-                                border-bottom: 1px solid #CCCCCC;
-                                color: #666666;
-                                font-size: 18px;
-                                font-weight: normal;
-                                font-family: "Open Sans";
-                            }
-                            .error-page-container a {
-                                text-decoration: none;
-                                color: #ffffff;
-                                background-color: #009AD7;
-                                padding: 11px 19px;
-                            }
-                            .error-page-container a:hover {
-                                text-decoration: none;
-                            }
-                        </style>
-                        <title>Under Maintenance</title>
-                    </head>
-                    <body>
-                        <div class="error-page-container">
-                            <h1>Maintenance</h1>
-                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAM...." alt="" />
-                            <h2>
-                                <p>Website is under maintenance right now. It will be back in few minutes.</p>
-                            </h2>
-                            <br />
-                            <a href="/">Try again</a>
-                        </div>
-                    </body>
-                    </html>
+                    <!-- your HTML content here -->
                     '''
                 }
             }
         }
-    }
-}
 
-
-stage('Database Synchronization') {
+        stage('Database Synchronization') {
             steps {
                 script {
                     try {
                         // MySQL dump from source database
-                        bat '''
-                            mysqldump -u source_username -psource_password -h source_host source_database > source_dump.sql
-                        '''
+                        bat 'mysqldump -u source_username -psource_password -h source_host source_database > source_dump.sql'
                         
                         // MySQL import to destination database
-                        bat '''
-                            mysql -u destination_username -pdestination_password -h destination_host destination_database < source_dump.sql
-                        '''
+                        bat 'mysql -u destination_username -pdestination_password -h destination_host destination_database < source_dump.sql'
                     } catch (Exception e) {
                         currentBuild.result = 'FAILURE'
                         error "Failed to synchronize databases: ${e.message}"
@@ -165,3 +71,5 @@ stage('Database Synchronization') {
                 }
             }
         }
+    }
+}
