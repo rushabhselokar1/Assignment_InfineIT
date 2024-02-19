@@ -60,7 +60,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        def mysqlDumpCmd = "C:\Program Files\MySQL\MySQL Workbench 8.0 CE\\mysqldump"
+                        def mysqlDumpCmd = "C:\\Program Files\\MySQL\\MySQL Workbench 8.0 CE\\mysqldump"
                         def sourceUsername = "admin"
                         def sourcePassword = "admin123"
                         def sourceHost = "database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com"
