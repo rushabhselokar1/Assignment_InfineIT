@@ -13,29 +13,30 @@ pipeline {
         }
 
         stage('Build') {
-            steps {
-                script {
-                    // Define MSBuild command
-                    def msbuildCmd = "\"${tool 'MSBuild'}\" Assignment_InfineIT.sln " +
-                                    "/p:DeployOnBuild=true " +
-                                    "/p:DeployDefaultTarget=WebPublish " +
-                                    "/p:WebPublishMethod=FileSystem " +
-                                    "/p:SkipInvalidConfigurations=true " +
-                                    "/t:build " +
-                                    "/p:Configuration=Release " +
-                                    "/p:Platform=\"Any CPU\" " +
-                                    "/p:DeleteExistingFiles=True " +
-                                    "/p:publishUrl=c:\\inetpub\\wwwroot"
-                    
-                    // Execute MSBuild and additional commands in a single bat step
-                    bat """
-                        ${msbuildCmd}
-                        echo Additional commands...
-                        rem Add your additional commands here
-                    """
-                }
-            }
+    steps {
+        script {
+            // Define MSBuild command with the full path
+            def msbuildCmd = "\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe\" Assignment_InfineIT.sln " +
+                            "/p:DeployOnBuild=true " +
+                            "/p:DeployDefaultTarget=WebPublish " +
+                            "/p:WebPublishMethod=FileSystem " +
+                            "/p:SkipInvalidConfigurations=true " +
+                            "/t:build " +
+                            "/p:Configuration=Release " +
+                            "/p:Platform=\"Any CPU\" " +
+                            "/p:DeleteExistingFiles=True " +
+                            "/p:publishUrl=c:\\inetpub\\wwwroot"
+            
+            // Execute MSBuild and additional commands in a single bat step
+            bat """
+                ${msbuildCmd}
+                echo Additional commands...
+                rem Add your additional commands here
+            """
         }
+    }
+}
+
 
 //         stage('Run Windows Batch Commands') {
 //     steps {
