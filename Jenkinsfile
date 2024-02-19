@@ -54,22 +54,49 @@ pipeline {
                 }
             }
         }
+         
 
         stage('Database Synchronization') {
             steps {
                 script {
                     try {
+                        def mysqlDumpCmd = "C:\Program Files\MySQL\MySQL Workbench 8.0 CE\\mysqldump"
+                        def sourceUsername = "admin"
+                        def sourcePassword = "admin123"
+                        def sourceHost = "database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com"
+                        def sourceDatabase = "employee"
+
                         // MySQL dump from source database
-                        bat 'mysqldump -u source_username -psource_password -h source_host source_database > source_dump.sql'
-                        
+                        bat "${mysqlDumpCmd} -u ${sourceUsername} -p${sourcePassword} -h ${sourceHost} ${sourceDatabase} > source_dump.sql"
+
                         // MySQL import to destination database
-                        bat 'mysql -u destination_username -pdestination_password -h destination_host destination_database < source_dump.sql'
-                    } catch (Exception e) {
-                        currentBuild.result = 'FAILURE'
-                        error "Failed to synchronize databases: ${e.message}"
-                    }
-                }
+                        bat "mysql -u admin -p admin123 -h database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com test_database < source_dump.sql"
+                        } catch (Exception e) {
+                            currentBuild.result = 'FAILURE'
+                            error "Failed to synchronize databases: ${e.message}"
             }
         }
+    }
+}
+
+
+
+
+        //      stage('Database Synchronization') {
+        //     steps {
+        //         script {
+        //             try {
+        //                 // MySQL dump from source database
+        //                 bat 'mysqldump -u admin -p admin123 -h database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com employee > source_dump.sql'
+                        
+        //                 // MySQL import to destination database
+        //                 bat 'mysql -u admin -p admin123 -h database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com test_database < source_dump.sql'
+        //             } catch (Exception e) {
+        //                 currentBuild.result = 'FAILURE'
+        //                 error "Failed to synchronize databases: ${e.message}"
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
