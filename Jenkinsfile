@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     triggers {
-        cron('*/2 * * * *')  // Trigger the build every 2 min
+        cron('/2 * * * *')  // Trigger the build every 2 min
     }
 
     stages {
@@ -15,6 +15,9 @@ pipeline {
         stage('Build') {
     steps {
         script {
+            // NuGet Package Restore
+            bat "\"C:\\Program Files (x86)\\NuGet\\nuget.exe\" restore Assignment_InfineIT.sln"
+            
             // Define MSBuild command with the full path
             def msbuildCmd = "\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe\" Assignment_InfineIT.sln " +
                             "/p:DeployOnBuild=true " +
@@ -27,7 +30,7 @@ pipeline {
                             "/p:DeleteExistingFiles=True " +
                             "/p:publishUrl=c:\\inetpub\\wwwroot"
             
-            // Execute MSBuild and additional commands in a single bat step
+            // Execute NuGet Package Restore, MSBuild, and additional commands in a single bat step
             bat """
                 ${msbuildCmd}
                 echo Additional commands...
@@ -36,6 +39,7 @@ pipeline {
         }
     }
 }
+
 
 
 //         stage('Run Windows Batch Commands') {
