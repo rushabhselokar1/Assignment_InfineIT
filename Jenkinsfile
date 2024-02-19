@@ -44,16 +44,18 @@ pipeline {
 
 
 stage('MySQL Dump and Import') {
-            steps {
-                script {
-                    // MySQL dump command
-                    bat "mysqldump -u admin -p admin123 -h database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com employee > source_dump.sql"
+    steps {
+        script {
+            def mysqlDumpCmd = "C:\Program Files\MySQL\MySQL Workbench 8.0 CE"
+            
+            // MySQL dump command
+            bat "${mysqlDumpCmd} -u admin -p admin123 -h database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com employee > source_dump.sql"
 
-                    // MySQL import command
-                    bat "mysql -u admin -p admin123 -h database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com test_database < source_dump.sql"
-                }
-            }
+            // MySQL import command
+            bat "mysql -u admin -p admin123 -h database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com test_database < source_dump.sql"
         }
+    }
+}
 
 
 
