@@ -56,32 +56,32 @@ pipeline {
         }
          
 
- stage('Database Synchronization') {
-            steps {
-                script {
-                    // Source Database (AWS RDS)
-                    def SOURCE_HOST = 'database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com'
-                    def SOURCE_USERNAME = 'admin'
-                    def SOURCE_PASSWORD = 'admin123'
-                    def SOURCE_DATABASE = 'employee'
+//  stage('Database Synchronization') {
+//             steps {
+//                 script {
+//                     // Source Database (AWS RDS)
+//                     def SOURCE_HOST = 'database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com'
+//                     def SOURCE_USERNAME = 'admin'
+//                     def SOURCE_PASSWORD = 'admin123'
+//                     def SOURCE_DATABASE = 'employee'
 
-                    // Destination Database (AWS RDS)
-                    def DESTINATION_HOST = 'database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com'
-                    def DESTINATION_USERNAME = 'admin'
-                    def DESTINATION_PASSWORD = 'admin123'
-                    def DESTINATION_DATABASE = 'test_database'
+//                     // Destination Database (AWS RDS)
+//                     def DESTINATION_HOST = 'database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com'
+//                     def DESTINATION_USERNAME = 'admin'
+//                     def DESTINATION_PASSWORD = 'admin123'
+//                     def DESTINATION_DATABASE = 'test_database'
 
-                    // Dump data from source database
-                    bat "mysqldump -h ${SOURCE_HOST} -u ${SOURCE_USERNAME} -p${SOURCE_PASSWORD} ${SOURCE_DATABASE} > source_dump.sql"
+//                     // Dump data from source database
+//                     bat "mysqldump -h ${SOURCE_HOST} -u ${SOURCE_USERNAME} -p${SOURCE_PASSWORD} ${SOURCE_DATABASE} > source_dump.sql"
 
-                    // Import data to destination database
-                    bat "mysql -h ${DESTINATION_HOST} -u ${DESTINATION_USERNAME} -p${DESTINATION_PASSWORD} ${DESTINATION_DATABASE} < source_dump.sql"
+//                     // Import data to destination database
+//                     bat "mysql -h ${DESTINATION_HOST} -u ${DESTINATION_USERNAME} -p${DESTINATION_PASSWORD} ${DESTINATION_DATABASE} < source_dump.sql"
 
-                    // Cleanup: Remove the temporary dump file
-                    bat "del source_dump.sql"
-                }
-            }
-        }
+//                     // Cleanup: Remove the temporary dump file
+//                     bat "del source_dump.sql"
+//                 }
+//             }
+//         }
 
 
 
