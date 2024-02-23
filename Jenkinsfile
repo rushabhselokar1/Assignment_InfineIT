@@ -47,7 +47,7 @@ pipeline {
             steps {
                 script {
                     // Create app_offline.htm for maintenance
-                    writeFile file: 'C:\\inetpub\\wwwroot\\App_offline.htm', text: '''
+                    writeFile file: 'C:\\inetpub\\wwwroot\\DISABLE-App_offline.htm', text: '''
                     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
                     <html>
                     <head>
@@ -169,21 +169,21 @@ pipeline {
 
 
 
-        //      stage('Database Synchronization') {
-        //     steps {
-        //         script {
-        //             try {
-        //                 // MySQL dump from source database
-        //                 bat 'mysqldump -u admin -p admin123 -h database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com employee > source_dump.sql'
+             stage('Database Synchronization') {
+            steps {
+                script {
+                    try {
+                        // MySQL dump from source database
+                        bat 'mysqldump -u admin -padmin123 -h database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com employee > source_dump.sql'
                         
-        //                 // MySQL import to destination database
-        //                 bat 'mysql -u admin -p admin123 -h database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com test_database < source_dump.sql'
-        //             } catch (Exception e) {
-        //                 currentBuild.result = 'FAILURE'
-        //                 error "Failed to synchronize databases: ${e.message}"
-        //             }
-        //         }
-        //     }
-        // }
+                        // MySQL import to destination database
+                        bat 'mysql -u admin -padmin123 -h database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com test_database2 < source_dump.sql'
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        error "Failed to synchronize databases: ${e.message}"
+                    }
+                }
+            }
+        }
     }
 }
