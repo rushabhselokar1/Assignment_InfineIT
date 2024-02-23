@@ -52,7 +52,47 @@ pipeline {
                     <html>
                     <head>
                         <style type="text/css">
-                            /* ... CSS Styles ... */
+                            @font-face {
+                                font-family: "Open Sans";
+                                font-style: normal;
+                                font-weight: 400;
+                                src: local("Segoe UI"), local("Open Sans"), local("OpenSans"), url(https://themes.googleusercontent.com/static/fonts/opensans/v6/K88pR3goAWT7BTt32Z01mz8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+                            }
+                            body {
+                                font-family: "Open Sans";
+                            }
+                            h1 {
+                                font-size: 90px !important;
+                            }
+                            .error-page-container {
+                                color: #333333;
+                                margin: 50px auto 0;
+                                text-align: center;
+                                width: 600px;
+                            }
+                            .error-page-container h1 {
+                                font-size: 120px;
+                                font-weight: normal;
+                                line-height: 120px;
+                                margin: 10px 0;
+                                font-family: "Open Sans";
+                            }
+                            .error-page-container h2 {
+                                border-bottom: 1px solid #CCCCCC;
+                                color: #666666;
+                                font-size: 18px;
+                                font-weight: normal;
+                                font-family: "Open Sans";
+                            }
+                            .error-page-container a {
+                                text-decoration: none;
+                                color: #ffffff;
+                                background-color: #009AD7;
+                                padding: 11px 19px;
+                            }
+                            .error-page-container a:hover {
+                                text-decoration: none;
+                            }
                         </style>
                         <title>Under Maintenance</title>
                     </head>
