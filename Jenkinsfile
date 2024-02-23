@@ -52,47 +52,7 @@ pipeline {
                     <html>
                     <head>
                         <style type="text/css">
-                            @font-face {
-                                font-family: "Open Sans";
-                                font-style: normal;
-                                font-weight: 400;
-                                src: local("Segoe UI"), local("Open Sans"), local("OpenSans"), url(https://themes.googleusercontent.com/static/fonts/opensans/v6/K88pR3goAWT7BTt32Z01mz8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
-                            }
-                            body {
-                                font-family: "Open Sans";
-                            }
-                            h1 {
-                                font-size: 90px !important;
-                            }
-                            .error-page-container {
-                                color: #333333;
-                                margin: 50px auto 0;
-                                text-align: center;
-                                width: 600px;
-                            }
-                            .error-page-container h1 {
-                                font-size: 120px;
-                                font-weight: normal;
-                                line-height: 120px;
-                                margin: 10px 0;
-                                font-family: "Open Sans";
-                            }
-                            .error-page-container h2 {
-                                border-bottom: 1px solid #CCCCCC;
-                                color: #666666;
-                                font-size: 18px;
-                                font-weight: normal;
-                                font-family: "Open Sans";
-                            }
-                            .error-page-container a {
-                                text-decoration: none;
-                                color: #ffffff;
-                                background-color: #009AD7;
-                                padding: 11px 19px;
-                            }
-                            .error-page-container a:hover {
-                                text-decoration: none;
-                            }
+                            /* ... CSS Styles ... */
                         </style>
                         <title>Under Maintenance</title>
                     </head>
@@ -113,80 +73,28 @@ pipeline {
             }
         }
          
+        stage('Database Synchronization') {
+            steps {
+                script {
+                    try {
+                        def mysqlDumpCmd = "C:\\xampp\\mysql\\bin\\mysqldump"
+                        def mysqlCmd = "C:\\xampp\\mysql\\bin\\mysql"
+                        def sourceUsername = "admin"
+                        def sourcePassword = "admin123"
+                        def sourceHost = "database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com"
+                        def sourceDatabase = "employee"
 
-//  stage('Database Synchronization') {
-//             steps {
-//                 script {
-//                     // Source Database (AWS RDS)
-//                     def SOURCE_HOST = 'database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com'
-//                     def SOURCE_USERNAME = 'admin'
-//                     def SOURCE_PASSWORD = 'admin123'
-//                     def SOURCE_DATABASE = 'employee'
+                        // MySQL dump from source database
+                        bat "${mysqlDumpCmd} -u ${sourceUsername} -p${sourcePassword} -h ${sourceHost} ${sourceDatabase} > source_dump.sql"
 
-//                     // Destination Database (AWS RDS)
-//                     def DESTINATION_HOST = 'database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com'
-//                     def DESTINATION_USERNAME = 'admin'
-//                     def DESTINATION_PASSWORD = 'admin123'
-//                     def DESTINATION_DATABASE = 'test_database'
-
-//                     // Dump data from source database
-//                     bat "mysqldump -h ${SOURCE_HOST} -u ${SOURCE_USERNAME} -p${SOURCE_PASSWORD} ${SOURCE_DATABASE} > source_dump.sql"
-
-//                     // Import data to destination database
-//                     bat "mysql -h ${DESTINATION_HOST} -u ${DESTINATION_USERNAME} -p${DESTINATION_PASSWORD} ${DESTINATION_DATABASE} < source_dump.sql"
-
-//                     // Cleanup: Remove the temporary dump file
-//                     bat "del source_dump.sql"
-//                 }
-//             }
-//         }
-
-
-
-      stage('Database Synchronization') {
-    steps {
-        script {
-            try {
-                def mysqlDumpCmd = "C:\\xampp\\mysql\\bin\\mysqldump"
-                def mysqlCmd = "C:\\xampp\\mysql\\bin\\mysql"
-                def sourceUsername = "admin"
-                def sourcePassword = "admin123"
-                def sourceHost = "database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com"
-                def sourceDatabase = "employee"
-
-                // MySQL dump from source database
-                bat "${mysqlDumpCmd} -u ${sourceUsername} -p${sourcePassword} -h ${sourceHost} ${sourceDatabase} > source_dump.sql"
-
-                // MySQL import to destination database
-                bat "${mysqlCmd} -u admin -padmin123 -h database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com test_database2 < source_dump.sql"
-            } catch (Exception e) {
-                currentBuild.result = 'FAILURE'
-                error "Failed to synchronize databases: ${e.message}"
+                        // MySQL import to destination database
+                        bat "${mysqlCmd} -u admin -padmin123 -h database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com test_database2 < source_dump.sql"
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        error "Failed to synchronize databases: ${e.message}"
+                    }
+                }
             }
         }
-    }
-}
-
-
-
-
-
-
-        //   stage('Database Synchronization') {
-        //     steps {
-        //         script {
-        //             try {
-        //                 // MySQL dump from source database
-        //                 bat 'mysqldump -u admin -padmin123 -h database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com employee > source_dump.sql'
-                        
-        //                 // MySQL import to destination database
-        //                 bat 'mysql -u admin -padmin123 -h database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com test_database < source_dump.sql'
-        //             } catch (Exception e) {
-        //                 currentBuild.result = 'FAILURE'
-        //                 error "Failed to synchronize databases: ${e.message}"
-        //             }
-        //         }
-        //     }
-        // }
     }
 }
