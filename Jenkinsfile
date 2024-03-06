@@ -123,9 +123,8 @@ pipeline {
         //             try {
         //                 def mysqlDumpCmd = "C:\\xampp\\mysql\\bin\\mysqldump"
         //                 def mysqlCmd = "C:\\xampp\\mysql\\bin\\mysql"
-        //                 def sourceUsername = "admin"
-        //                 def sourcePassword = "admin123"
-        //                 def sourceHost = "database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com"
+        //                 def sourceUsername = "root"
+        //                 def sourceHost = ""
         //                 def sourceDatabase = "employee"
 
         //                 // MySQL dump from source database
