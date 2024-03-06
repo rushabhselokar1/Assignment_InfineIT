@@ -117,28 +117,28 @@ pipeline {
             }
         }
          
-        stage('Database Synchronization') {
-            steps {
-                script {
-                    try {
-                        def mysqlDumpCmd = "C:\\xampp\\mysql\\bin\\mysqldump"
-                        def mysqlCmd = "C:\\xampp\\mysql\\bin\\mysql"
-                        def sourceUsername = "admin"
-                        def sourcePassword = "admin123"
-                        def sourceHost = "database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com"
-                        def sourceDatabase = "employee"
+        // stage('Database Synchronization') {
+        //     steps {
+        //         script {
+        //             try {
+        //                 def mysqlDumpCmd = "C:\\xampp\\mysql\\bin\\mysqldump"
+        //                 def mysqlCmd = "C:\\xampp\\mysql\\bin\\mysql"
+        //                 def sourceUsername = "admin"
+        //                 def sourcePassword = "admin123"
+        //                 def sourceHost = "database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com"
+        //                 def sourceDatabase = "employee"
 
-                        // MySQL dump from source database
-                        bat "${mysqlDumpCmd} -u ${sourceUsername} -p${sourcePassword} -h ${sourceHost} ${sourceDatabase} > source_dump.sql"
+        //                 // MySQL dump from source database
+        //                 bat "${mysqlDumpCmd} -u ${sourceUsername} -p${sourcePassword} -h ${sourceHost} ${sourceDatabase} > source_dump.sql"
 
-                        // MySQL import to destination database
-                        bat "${mysqlCmd} -u admin -padmin123 -h database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com test_database2 < source_dump.sql"
-                    } catch (Exception e) {
-                        currentBuild.result = 'FAILURE'
-                        error "Failed to synchronize databases: ${e.message}"
-                    }
-                }
-            }
-        }
+        //                 // MySQL import to destination database
+        //                 bat "${mysqlCmd} -u admin -padmin123 -h database-1.czy80ukqeckv.us-east-1.rds.amazonaws.com test_database2 < source_dump.sql"
+        //             } catch (Exception e) {
+        //                 currentBuild.result = 'FAILURE'
+        //                 error "Failed to synchronize databases: ${e.message}"
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
