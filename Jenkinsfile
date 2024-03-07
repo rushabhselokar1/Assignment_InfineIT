@@ -243,18 +243,21 @@ pipeline {
     steps {
         script {
             try {
+                def mysqldumpCmd = '"C:\\xampp\\mysql\\bin\\mysqldump"'
+                def mysqlCmd = '"C:\\xampp\\mysql\\bin\\mysql"'
+
                 // Export data and schema from the source database
-                bat 'mysqldump -u root -h 127.0.0.1 --no-data employee > source_schema.sql'
-                bat 'mysqldump -u root -h 127.0.0.1 employee > source_data.sql'
+                bat "${mysqldumpCmd} -u root -h 127.0.0.1 --no-data employee > source_schema.sql"
+                bat "${mysqldumpCmd} -u root -h 127.0.0.1 employee > source_data.sql"
 
                 // Drop and recreate the destination database
-                bat 'mysql -u root -h 127.0.0.1 -e "DROP DATABASE IF EXISTS database1; CREATE DATABASE database1;"'
+                bat "${mysqlCmd} -u root -h 127.0.0.1 -e \"DROP DATABASE IF EXISTS database1; CREATE DATABASE database1;\""
 
                 // Import schema into the destination database
-                bat 'mysql -u root -h 127.0.0.1 database1 < source_schema.sql'
+                bat "${mysqlCmd} -u root -h 127.0.0.1 database1 < source_schema.sql"
 
                 // Import data into the destination database with data overwrite
-                bat 'mysql -u root -h 127.0.0.1 --force database1 < source_data.sql'
+                bat "${mysqlCmd} -u root -h 127.0.0.1 --force database1 < source_data.sql"
             } catch (Exception e) {
                 currentBuild.result = 'FAILURE'
                 error "Failed to synchronize databases: ${e.message}"
