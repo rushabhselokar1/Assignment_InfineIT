@@ -131,7 +131,11 @@ pipeline {
                         bat "${mysqlDumpCmd} -u ${sourceUsername} -h ${sourceHost} ${sourceDatabase} > source_dump.sql"
 
                         // MySQL import to destination database
-                        bat "${mysqlCmd} -u root -h 127.0.0.1 employee < source_dump.sql"
+                        bat "${mysqlCmd} -u root -h 127.0.0.1 database1 < source_dump.sql"
+
+                        // MySQL import to destination database 2
+                        bat "${mysqlCmd} -u root -h 127.0.0.1 database2 < source_dump.sql"
+                   
                     } catch (Exception e) {
                         currentBuild.result = 'FAILURE'
                         error "Failed to synchronize databases: ${e.message}"
