@@ -125,7 +125,7 @@ pipeline {
                         def mysqlCmd = "C:\\xampp\\mysql\\bin\\mysql"
                         def sourceUsername = "root"
                         def sourceHost = "127.0.0.1"
-                        def sourceDatabase = "employee"
+                        def sourceDatabase = "test"
 
                         // MySQL dump from source database
                         bat "${mysqlDumpCmd} -u ${sourceUsername} -h ${sourceHost} ${sourceDatabase} > source_dump.sql"
@@ -137,7 +137,7 @@ pipeline {
                         bat "${mysqlCmd} -u root -h 127.0.0.1 database2 < source_dump.sql"
                    
                         // MySQL import to destination database 2
-                        bat "${mysqlCmd} -u root -h 127.0.0.1 test < source_dump.sql"
+                        bat "${mysqlCmd} -u root -h 127.0.0.1 employee < source_dump.sql"
 
                     } catch (Exception e) {
                         currentBuild.result = 'FAILURE'
