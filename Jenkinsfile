@@ -125,7 +125,7 @@ pipeline {
                         def mysqlCmd = "C:\\xampp\\mysql\\bin\\mysql"
                         def sourceUsername = "root"
                         def sourceHost = "127.0.0.1"
-                        def sourceDatabase = "database2"
+                        def sourceDatabase = "employee"
 
                         // MySQL dump from source database
                         bat "${mysqlDumpCmd} -u ${sourceUsername} -h ${sourceHost} ${sourceDatabase} > source_dump.sql"
