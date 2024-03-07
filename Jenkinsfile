@@ -125,13 +125,13 @@ pipeline {
                         def mysqlCmd = "C:\\xampp\\mysql\\bin\\mysql"
                         def sourceUsername = "root"
                         def sourceHost = "127.0.0.1"
-                        def sourceDatabase = "employee"
+                        def sourceDatabase = "emp"
 
                         // MySQL dump from source database
                         bat "${mysqlDumpCmd} -u ${sourceUsername} -h ${sourceHost} ${sourceDatabase} > source_dump.sql"
 
                         // MySQL import to destination database
-                        bat "${mysqlCmd} -u root -h 127.0.0.1 emp < source_dump.sql"
+                        bat "${mysqlCmd} -u root -h 127.0.0.1 employee < source_dump.sql"
 
                         // // MySQL import to destination database 2
                         // bat "${mysqlCmd} -u root -h 127.0.0.1 database2 < source_dump.sql"
