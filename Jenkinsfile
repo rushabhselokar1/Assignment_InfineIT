@@ -240,27 +240,28 @@ pipeline {
         }
         
         stage('Perform Database Synchronization') {
-            steps {
-                script {
-                    try {
-                        // Export data and schema from the source database
-                        sh "mysqldump -u root -h 127.0.0.1 --no-data employee > source_schema.sql"
-                        sh "mysqldump -u root -h 127.0.0.1 employee > source_data.sql"
+    steps {
+        script {
+            try {
+                // Export data and schema from the source database
+                bat 'mysqldump -u root -h 127.0.0.1 --no-data employee > source_schema.sql'
+                bat 'mysqldump -u root -h 127.0.0.1 employee > source_data.sql'
 
-                        // Drop and recreate the destination database
-                        sh "mysql -u root -h 127.0.0.1 -e \"DROP DATABASE IF EXISTS database1; CREATE DATABASE database1;\""
+                // Drop and recreate the destination database
+                bat 'mysql -u root -h 127.0.0.1 -e "DROP DATABASE IF EXISTS database1; CREATE DATABASE database1;"'
 
-                        // Import schema into the destination database
-                        sh "mysql -u root -h 127.0.0.1 database1 < source_schema.sql"
+                // Import schema into the destination database
+                bat 'mysql -u root -h 127.0.0.1 database1 < source_schema.sql'
 
-                        // Import data into the destination database with data overwrite
-                        sh "mysql -u root -h 127.0.0.1 --force database1 < source_data.sql"
-                    } catch (Exception e) {
-                        currentBuild.result = 'FAILURE'
-                        error "Failed to synchronize databases: ${e.message}"
-                    }
-                }
+                // Import data into the destination database with data overwrite
+                bat 'mysql -u root -h 127.0.0.1 --force database1 < source_data.sql'
+            } catch (Exception e) {
+                currentBuild.result = 'FAILURE'
+                error "Failed to synchronize databases: ${e.message}"
             }
         }
+    }
+}
+
     }
 }
