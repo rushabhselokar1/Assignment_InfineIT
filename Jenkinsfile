@@ -117,34 +117,53 @@ pipeline {
             }
         }
          
-        stage('Database Synchronization') {
-            steps {
-                script {
-                    try {
-                        def mysqlDumpCmd = "C:\\xampp\\mysql\\bin\\mysqldump"
-                        def mysqlCmd = "C:\\xampp\\mysql\\bin\\mysql"
-                        def sourceUsername = "root"
-                        def sourceHost = "127.0.0.1"
-                        def sourceDatabase = "employee"
+        // stage('Database Synchronization') {
+        //     steps {
+        //         script {
+        //             try {
+        //                 def mysqlDumpCmd = "C:\\xampp\\mysql\\bin\\mysqldump"
+        //                 def mysqlCmd = "C:\\xampp\\mysql\\bin\\mysql"
+        //                 def sourceUsername = "root"
+        //                 def sourceHost = "127.0.0.1"
+        //                 def sourceDatabase = "employee"
 
-                        // MySQL dump from source database
-                        bat "${mysqlDumpCmd} -u ${sourceUsername} -h ${sourceHost} ${sourceDatabase} > source_dump.sql"
+        //                 // MySQL dump from source database
+        //                 bat "${mysqlDumpCmd} -u ${sourceUsername} -h ${sourceHost} ${sourceDatabase} > source_dump.sql"
 
-                        // MySQL import to destination database
-                        bat "${mysqlCmd} -u root -h 127.0.0.1 database1 < source_dump.sql"
+        //                 // MySQL import to destination database
+        //                 bat "${mysqlCmd} -u root -h 127.0.0.1 database1 < source_dump.sql"
 
-                        // MySQL import to destination database 2
-                        bat "${mysqlCmd} -u root -h 127.0.0.1 database2 < source_dump.sql"
+        //                 // MySQL import to destination database 2
+        //                 bat "${mysqlCmd} -u root -h 127.0.0.1 database2 < source_dump.sql"
                    
-                        // MySQL import to destination database 2
-                        bat "${mysqlCmd} -u root -h 127.0.0.1 test < source_dump.sql"
+        //                 // MySQL import to destination database 2
+        //                 bat "${mysqlCmd} -u root -h 127.0.0.1 test < source_dump.sql"
 
-                    } catch (Exception e) {
-                        currentBuild.result = 'FAILURE'
-                        error "Failed to synchronize databases: ${e.message}"
-                    }
-                }
-            }
+        //             } catch (Exception e) {
+        //                 currentBuild.result = 'FAILURE'
+        //                 error "Failed to synchronize databases: ${e.message}"
+        //             }
+        //         }
+        //     }
+        // }
+
+        stage('Perform Database Synchronization') {
+    steps {
+        script {
+            // Export data and schema from the source database
+            sh "mysqldump -u root -h 127.0.0.1 --no-data employee > source_schema.sql"
+            sh "mysqldump -u root -h 127.0.0.1 employee > source_data.sql"
+
+            // Drop and recreate the destination database
+            sh "mysql -u root -h 127.0.0.1 -e \"DROP DATABASE IF EXISTS database1; CREATE DATABASE database1;\""
+
+            // Import schema into the destination database
+            sh "mysql -u root -h 127.0.0.1 database1 < source_schema.sql"
+
+            // Import data into the destination database with data overwrite
+            sh "mysql -u root -h 127.0.0.1 --force database1 < source_data.sql"
         }
+    }
+}
     }
 }
